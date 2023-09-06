@@ -4,7 +4,7 @@ import Split from "react-split"
 import "firebase/auth"
 import { onSnapshot, addDoc, doc, deleteDoc, setDoc } from "firebase/firestore"
 import {useAuthState} from 'react-firebase-hooks/auth'
-import { notesCollection, db } from "../firebase"
+import { notesCollection, db, auth } from "../firebase"
 import {useCollectionData} from 'react-firebase-hooks/firestore'
 import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
