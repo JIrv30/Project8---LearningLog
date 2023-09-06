@@ -1,6 +1,14 @@
 import React from "react"
+import { UserAuth } from "../context/AuthContext"
 
 export default function Sidebar(props) {
+    const {logOut, user} = UserAuth();
+    
+    const handleSignOut = async () => {
+        try {await logOut()
+        } catch (error) {console.log(error)}
+      }
+    
     const noteElements = props.notes.map((note, index) => (
         <div key={note.id}>
             <div
@@ -24,6 +32,10 @@ export default function Sidebar(props) {
     return (
         <section className="pane sidebar">
             <div className="sidebar--header">
+                <div>
+                    <p>Welcolme, {user?.displayName}</p>
+                </div>
+                <button onClick={handleSignOut}>Logout</button>
                 <h3>Notes</h3>
                 <button className="new-note" onClick={props.newNote}>+</button>
             </div>
