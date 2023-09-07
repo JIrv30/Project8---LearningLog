@@ -198,6 +198,10 @@ button:focus {
   left: -2px
 } 
 
-.signInWithGoogle {
-  
+.logout-btn {
+  background-color: #4A4E74;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 25px 10px;
 }
