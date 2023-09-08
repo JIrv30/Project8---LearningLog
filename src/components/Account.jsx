@@ -2,8 +2,13 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { UserAuth } from "../context/AuthContext";
 
-import {onSnapshot, addDoc} from 'firebase/firestore'
-import {notesCollection} from '../../firebase'
+import {
+    onSnapshot, 
+    addDoc, 
+    doc, 
+    deleteDoc, 
+    setDoc} from 'firebase/firestore'
+import {notesCollection, db} from '../../firebase'
 
 import Split from "react-split";
 import Sidebar from "./Sidebar";
@@ -30,9 +35,15 @@ const Account = () => {
               id: doc.id
           }))
           setNotes(notesArr)
+          console.log(notesArr)
       })
       return unsubscribe
   }, [])
+
+  //testing
+  useEffect(()=>{
+    console.log(currentNote)
+  },[notes])
 
   React.useEffect(() => {
       if(!currentNoteId) {
