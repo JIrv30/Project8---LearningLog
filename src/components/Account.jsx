@@ -19,8 +19,10 @@ const Account = () => {
   const [notes, setNotes] = React.useState([])
   const [currentNoteId, setCurrentNoteId] = React.useState("")
   const [tempNoteText, setTempNoteText] = React.useState('')
+  const [currentUser, setCurrentUser] = useState('')
 
-  
+  const {googleSignIn, user} = UserAuth();
+
   const currentNote = 
       notes.find(note => note.id === currentNoteId) 
       || notes[0]
@@ -32,17 +34,21 @@ const Account = () => {
           // Sync up our local notes array with the snapshot data
           const notesArr = snapshot.docs.map(doc => ({
               ...doc.data(),
-              id: doc.id
+              id: doc.id,
           }))
           setNotes(notesArr)
-          console.log(notesArr)
+          
       })
       return unsubscribe
   }, [])
 
   //testing
   useEffect(()=>{
-    console.log(currentNote)
+    console.log(currentUser)
+  },[notes])
+
+  useEffect(()=>{
+    setCurrentUser(user)
   },[notes])
 
   React.useEffect(() => {
@@ -57,6 +63,8 @@ const Account = () => {
       }
       
   },[currentNote])
+
+ 
 
 
   //debouncing function - useeffect runs everytime tempNoteText changes (on every key stroke), however setTimeout is set to 500ms.  So Useeffect will Clean up with the return function which runs cleartimeout and cancels the old settimeout. React will then run the whole function again.
@@ -76,12 +84,15 @@ const Account = () => {
       return () => clearTimeout(timeoutId)
   },[tempNoteText])
 
+  
+
 
   async function createNewNote() {
       const newNote = {
           body: "# Type your markdown note's title here",
           createdAt: Date.now(),
-          updatedAt: Date.now()
+          updatedAt: Date.now(),
+          userid: currentUser.uid
       }
       const newNoteRef = await addDoc(notesCollection, newNote)
       setCurrentNoteId(newNoteRef.id)
