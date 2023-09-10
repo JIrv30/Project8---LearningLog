@@ -22,15 +22,16 @@ function Signin () {
   },[user])
 
   return (
-    <div>
-        <h1 className='main-login'>
-          Profesional Learning Diary Sign in
-        </h1>
+    <div className='main-login'>
       <div className='main-signin-container'>
+        <h1 className='PLD-title'>
+          Professional Learning Diary Sign in
+        </h1>
         <button 
         className='google-signin-btn'
         onClick={handleGoogleSignIn}
-        >Sign in</button>
+        ><span>Sign in</span></button>
+        
 
       </div>
     </div>

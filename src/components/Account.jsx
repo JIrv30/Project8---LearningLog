@@ -44,11 +44,11 @@ const Account = () => {
 
   //testing
   useEffect(()=>{
-    console.log(currentUser)
+    console.log(tempNoteText)
   },[notes])
 
   useEffect(()=>{
-    setCurrentUser(user)
+    setCurrentUser(user.uid)
   },[notes])
 
   React.useEffect(() => {
@@ -92,7 +92,7 @@ const Account = () => {
           body: "# Type your markdown note's title here",
           createdAt: Date.now(),
           updatedAt: Date.now(),
-          userid: currentUser.uid
+          userid: currentUser
       }
       const newNoteRef = await addDoc(notesCollection, newNote)
       setCurrentNoteId(newNoteRef.id)
@@ -127,10 +127,14 @@ const Account = () => {
                             setCurrentNoteId={setCurrentNoteId}
                             newNote={createNewNote}
                             deleteNote={deleteNote}
+                            currentUser={currentUser}
                         />
                             <Editor
                                 tempNoteText={tempNoteText}
                                 setTempNoteText={setTempNoteText}
+                                currentUser={currentUser}
+                                currentNote={currentNote}
+                                notes={sortedNotes}
                             />
                     </Split>
                     :

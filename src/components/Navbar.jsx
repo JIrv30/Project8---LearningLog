@@ -12,19 +12,19 @@ const Navbar = () => {
   }
 
   return (
-    <div>
-      <h1 className="Header">
-        Profesional Learning Diary
+    <div className="header">
+      <h1 className="title">
+        Professional Learning Diary
       </h1>
       <div className="user-name">
-        <p>Welcolme, {user?.displayName}</p>
+        {user && <p>Welcome, {user?.displayName}</p>}
       </div>
       {user?.displayName ? 
       <button
       className="logout-btn"
       onClick={handleSignOut}
       >Logout</button> : 
-      <Link to='signin'>Sign in</Link>}
+      <Link to='signin' className="signin">Sign in</Link>}
       
     </div>
   )

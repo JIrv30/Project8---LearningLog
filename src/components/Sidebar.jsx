@@ -9,14 +9,19 @@ export default function Sidebar(props) {
         } catch (error) {console.log(error)}
       }
     
-    const noteElements = props.notes.map((note, index) => (
+    
+
+    const noteElements = props.notes.map((note) => (
+        //add conditional logic to only show notes with the correct uid
+        
+        note.userid === props.currentUser ? 
+
         <div key={note.id}>
-            <div
-                
-                className={`title ${
-                    note.id === props.currentNote.id ? "selected-note" : ""
-                }`}
-                onClick={() => props.setCurrentNoteId(note.id)}
+             <div
+            className={`title ${
+                note.id === props.currentNote.id ? "selected-note" : ""
+            }`}
+            onClick={() => props.setCurrentNoteId(note.id)}
             >
                 <h4 className="text-snippet">{note.body.split("\n")[0]}</h4>
                 <button 
@@ -26,8 +31,9 @@ export default function Sidebar(props) {
                     <i className="gg-trash trash-icon"></i>
                 </button>
             </div>
-        </div>
-    ))
+        </div> : null
+    )
+    )
 
     return (
         <section className="pane sidebar">
