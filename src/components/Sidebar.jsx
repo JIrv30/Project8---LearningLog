@@ -34,7 +34,7 @@ export default function Sidebar(props) {
 // console.log(props)
     return (
         <section className="pane sidebar">
-            <button onClick={props.switchToAdmin}>Switch to Admin</button>
+            {/* <button onClick={props.switchToAdmin}>Switch to Admin</button> */}
             <div className="sidebar--header">
 
                 

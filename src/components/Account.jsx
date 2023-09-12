@@ -15,6 +15,7 @@ import Split from "react-split";
 import Sidebar from "./Sidebar";
 import Editor from "./Editor.JSX";
 import Admin from "./Admin";
+import Navbar from "./Navbar";
 
 const Account = () => {
  
@@ -36,17 +37,14 @@ const Account = () => {
       //runs through all notes and extracts unique users
       useEffect(()=>{
         const allUsers = []
-        notes.forEach(note=>allUsers.push(note.userid))
+        notes.forEach(note=>allUsers.push(note.displayName))
         const uqeUsers = allUsers.filter((value , index, self)=>{
             return self.indexOf(value)===index
         })
         setUniqueUsers(uqeUsers)
       },[notes])
 
-      //   testing
-  useEffect(()=>{
-    console.log(notes)
-  },[notes])
+
 
   const sortedNotes = notes.sort((a,b)=> b.updatedAt - a.updatedAt)
 
@@ -102,7 +100,6 @@ const Account = () => {
       return () => clearTimeout(timeoutId)
   },[tempNoteText])
 
-  
 
 
   async function createNewNote() {
@@ -111,7 +108,8 @@ const Account = () => {
           createdAt: Date.now(),
           updatedAt: Date.now(),
           userid: currentUser,
-          userEmail: user.email
+          userEmail: user.email,
+          displayName: user.displayName
       }
       const newNoteRef = await addDoc(notesCollection, newNote)
       setCurrentNoteId(newNoteRef.id)
@@ -141,7 +139,11 @@ const Account = () => {
 
 
   return (
-    <main> 
+    <main>
+    <Navbar 
+    switch={switchToAdmin}
+    seeAdmin={seeAdmin}
+    /> 
     { seeAdmin ? (
     <Admin
     notes={sortedNotes}

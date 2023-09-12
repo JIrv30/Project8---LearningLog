@@ -5,7 +5,6 @@ export default function Admin (props) {
   
   const [selectedUser, setSelectedUser] = useState('')
 
-console.log(selectedUser)
 
   const userListElements = props.uniqueUsers.map(note=>(
     <p 
@@ -17,7 +16,7 @@ console.log(selectedUser)
   ))
 
   const userNoteElements = props.notes.map(note =>(
-    note.userid===selectedUser ?    
+    note.displayName===selectedUser ?    
     <p key={note.id}>{note.body}</p>
     : null
   ))
@@ -26,7 +25,7 @@ console.log(selectedUser)
 
   return(
     <div className="Admin-console">
-      <button onClick={props.switch}>Switch to Learning Log</button>
+      {/* <button onClick={props.switch}>Switch to Learning Log</button> */}
       <div className="unique-users">
       {userListElements}
       </div>

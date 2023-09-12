@@ -25,7 +25,7 @@ export default function Editor({ tempNoteText, setTempNoteText, ...props }) {
         
         <section className="pane editor">
             {<ReactMde
-                value={props.currentNote && tempNoteText}
+                value={props.currentNote.userid===props.currentUser ? tempNoteText : null}
                 onChange={setTempNoteText}
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
