@@ -1,4 +1,4 @@
-# React + Vite
+# Profesional Learning Log
 
 A Learning Log application for school staff to be able to record their profesional learning and for Senior managers to be able to view individuals reflections and disscuss these in their line managmnet meetings
 
