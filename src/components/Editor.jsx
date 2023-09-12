@@ -1,10 +1,11 @@
-import React from "react"
+import React, { useState } from "react"
 import ReactMde from 'react-mde'
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import Showdown from "showdown"
 
-export default function Editor({ tempNoteText, setTempNoteText, props }) {
+export default function Editor({ tempNoteText, setTempNoteText, ...props }) {
     const [selectedTab, setSelectedTab] = React.useState("write")
+    
 
     const converter = new Showdown.Converter({
         tables: true,
@@ -16,15 +17,15 @@ export default function Editor({ tempNoteText, setTempNoteText, props }) {
     const fetchUserText = async () => {
         const userText = await props.currentNote.body
         setTempNoteText(userText)
+        setNoteClicked(true)
     }
     
-    console.log(selectedTab)
-//need to conditional render tempnotetext so only user who is logged in will see it
+
     return (
+        
         <section className="pane editor">
-            
-            <ReactMde
-                value={tempNoteText}
+            {<ReactMde
+                value={props.currentNote && tempNoteText}
                 onChange={setTempNoteText}
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
@@ -33,7 +34,8 @@ export default function Editor({ tempNoteText, setTempNoteText, props }) {
                 }
                 minEditorHeight={80}
                 heightUnits="vh"
-            />
+            />}
+            
         </section>
     )
 }

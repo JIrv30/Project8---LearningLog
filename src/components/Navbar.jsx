@@ -1,21 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 
 const Navbar = () => {
 
   const {user, logOut} = UserAuth()
+  const navigate = useNavigate()
 
   const handleSignOut = async () => {
+    
     try {await logOut()
     } catch (error) {console.log(error)}
   }
+  
+  
 
   return (
     <div className="header">
       <h1 className="title">
         Professional Learning Diary
       </h1>
+      
       <div className="user-name">
         {user && <p>Welcome, {user?.displayName}</p>}
       </div>

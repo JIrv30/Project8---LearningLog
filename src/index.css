@@ -294,3 +294,17 @@ button:focus {
   border-radius: 10px;
   padding: 10px 25px 10px;
 }
+
+.switch-to-admin-BTN {
+  margin-right: 20px;
+}
+
+.Admin-console {
+  display: flex;
+  column-gap: 40px;
+}
+
+.selected-user {
+  background-color: #3f4364;
+  color: white;
+}

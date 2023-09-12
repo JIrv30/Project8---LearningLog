@@ -11,10 +11,7 @@ export default function Sidebar(props) {
     
     
 
-    const noteElements = props.notes.map((note) => (
-        //add conditional logic to only show notes with the correct uid
-        
-        note.userid === props.currentUser ? 
+    const noteElements = props.notes.map((note) => (note.userid === props.currentUser ? 
 
         <div key={note.id}>
              <div
@@ -34,10 +31,12 @@ export default function Sidebar(props) {
         </div> : null
     )
     )
-
+// console.log(props)
     return (
         <section className="pane sidebar">
+            <button onClick={props.switchToAdmin}>Switch to Admin</button>
             <div className="sidebar--header">
+
                 
                 <h3>Notes</h3>
                 <button className="new-note" onClick={props.newNote}>+</button>

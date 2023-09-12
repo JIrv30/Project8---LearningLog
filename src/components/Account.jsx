@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { UserAuth } from "../context/AuthContext";
 
+
 import {
     onSnapshot, 
     addDoc, 
@@ -13,19 +14,39 @@ import {notesCollection, db} from '../../firebase'
 import Split from "react-split";
 import Sidebar from "./Sidebar";
 import Editor from "./Editor.JSX";
+import Admin from "./Admin";
 
 const Account = () => {
  
   const [notes, setNotes] = React.useState([])
+  
   const [currentNoteId, setCurrentNoteId] = React.useState("")
   const [tempNoteText, setTempNoteText] = React.useState('')
   const [currentUser, setCurrentUser] = useState('')
+  const [seeAdmin, setSeeAdmin] = useState(false)
+  const [uniqueUsers, setUniqueUsers] = useState([])
 
   const {googleSignIn, user} = UserAuth();
 
   const currentNote = 
       notes.find(note => note.id === currentNoteId) 
       || notes[0]
+
+      
+      //runs through all notes and extracts unique users
+      useEffect(()=>{
+        const allUsers = []
+        notes.forEach(note=>allUsers.push(note.userid))
+        const uqeUsers = allUsers.filter((value , index, self)=>{
+            return self.indexOf(value)===index
+        })
+        setUniqueUsers(uqeUsers)
+      },[notes])
+
+      //   testing
+  useEffect(()=>{
+    console.log(notes)
+  },[notes])
 
   const sortedNotes = notes.sort((a,b)=> b.updatedAt - a.updatedAt)
 
@@ -42,10 +63,7 @@ const Account = () => {
       return unsubscribe
   }, [])
 
-  //testing
-  useEffect(()=>{
-    console.log(tempNoteText)
-  },[notes])
+
 
   useEffect(()=>{
     setCurrentUser(user.uid)
@@ -92,7 +110,8 @@ const Account = () => {
           body: "# Type your markdown note's title here",
           createdAt: Date.now(),
           updatedAt: Date.now(),
-          userid: currentUser
+          userid: currentUser,
+          userEmail: user.email
       }
       const newNoteRef = await addDoc(notesCollection, newNote)
       setCurrentNoteId(newNoteRef.id)
@@ -111,48 +130,69 @@ const Account = () => {
       await deleteDoc(docRef)
   }
 
+  
+  function switchToAdmin() {
+    if(user != null) {
+      setSeeAdmin(!seeAdmin)
+      
+    }
+  }
+
+
+
   return (
     <main> 
-    {
-                notes.length > 0
-                    ?
-                    <Split
-                        sizes={[30, 70]}
-                        direction="horizontal"
-                        className="split"
-                    >
-                        <Sidebar
-                            notes={sortedNotes}
-                            currentNote={currentNote}
-                            setCurrentNoteId={setCurrentNoteId}
-                            newNote={createNewNote}
-                            deleteNote={deleteNote}
-                            currentUser={currentUser}
-                        />
-                            <Editor
-                                tempNoteText={tempNoteText}
-                                setTempNoteText={setTempNoteText}
-                                currentUser={currentUser}
-                                currentNote={currentNote}
-                                notes={sortedNotes}
-                            />
-                    </Split>
-                    :
-                    <div className="no-notes">
-                        <section>
-                        <h1>You have no notes</h1>
-                        <button
-                            className="first-note"
-                            onClick={createNewNote}>
-                        Create one now
-                        </button>
-                        </section>
-                        
-                    </div>
-
-            } 
+    { seeAdmin ? (
+    <Admin
+    notes={sortedNotes}
+    uniqueUsers={uniqueUsers}
+    switch={switchToAdmin}
+    />
+    ) : (
+        <>
+        {notes.length > 0 ? (
+        <Split
+            sizes={[30, 70]}
+            direction="horizontal"
+            className="split"
+        >
+        <Sidebar
+        notes={sortedNotes}
+        currentNote={currentNote}
+        setCurrentNoteId={setCurrentNoteId}
+        newNote={createNewNote}
+        deleteNote={deleteNote}
+        currentUser={currentUser}
+        switchToAdmin={switchToAdmin}
+        />
+        <Editor
+            tempNoteText={tempNoteText}
+            setTempNoteText={setTempNoteText}
+            currentUser={currentUser}
+            currentNote={currentNote}
+            notes={sortedNotes}
+            currentNoteId={currentNoteId}
+        />
+        </Split>
+        ) : (
+            <div className="no-notes">
+            <section>
+            <h1>You have no notes</h1>
+            <button
+                className="first-note"
+                onClick={createNewNote}>
+            Create one now
+            </button>
+            </section>
+        </div>)} 
+        
+        </>
+    )}
+    
+        
+        
     </main>
- ) 
+    ) 
 }
 
 export default Account
